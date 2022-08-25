@@ -10,6 +10,7 @@ public class Main {
     public static String[] productsOnSale = {"Хлеб", "Мороженка"};
 
     public static void main(String[] args) {
+        int amount = 0;
         System.out.println("Добро пожаловать в магазин!");
         System.out.println("Наш ассортимент:");
         for (int i = 0; i < products.length; i++) {
@@ -30,23 +31,26 @@ public class Main {
             }
             try {
                 String[] parts = line.split(" ");
-                if (parts.length < 2) {
+                if (parts.length != 2) {
                     System.out.println("Неверно, вводите номер товара и количество через пробел!");
                     continue;
+                }else {
+                    int productNum = Integer.parseInt(parts[0]) - 1;
+                    int productCount = Integer.parseInt(parts[1]);
+                    counts[productNum] += productCount;
                 }
-                int productNum = Integer.parseInt(parts[0]) - 1;
-
-                int productCount = Integer.parseInt(parts[1]);
-                counts[productNum] += productCount;
-
-            } catch (NumberFormatException e) {
-                System.out.println("Неверный номер товара!");
+            }
+            catch (NumberFormatException exception) {
+                System.out.println("Некорректные данные!");
+                continue;
+            }
+            catch (ArrayIndexOutOfBoundsException exception){
+                System.out.println("Некорректные данные!");
                 continue;
             }
 
             System.out.println("Ваша корзина покупок:");
             int sum = 0;
-            int amount = 0;
             for (int i = 0; i < products.length; i++) {
                 sum += prices[i] * counts[i];
             }
@@ -60,21 +64,24 @@ public class Main {
                             isOnSale = true;
                         }
                     }
+                    StringBuilder str = new StringBuilder();
+                    int c = (doBonus ? counts[i] + 1 : counts[i]);
+
+
 
                     if (isOnSale && doBonus) {
-                        System.out.println("\t" + products[i] + " " + (doBonus ? counts[i] + 1 : counts[i]) + " шт. за " + (prices[i] * (counts[i] / 3 * 2 + counts[i] % 3)) + " руб. (распродажа и акция!)");
+                        System.out.println("\t" + products[i] + " " + str.append(c) + " шт. за " + (prices[i] * (counts[i] / 3 * 2 + counts[i] % 3)) + " руб. (распродажа и акция!)");
                         amount += prices[i] * (counts[i] / 3 * 2 + counts[i] % 3);
                     } else if (isOnSale) {
-                        System.out.println("\t" + products[i] + " " + (doBonus ? counts[i] + 1 : counts[i]) + " шт. за " + (prices[i] * (counts[i] / 3 * 2 + counts[i] % 3)) + " руб. (распродажа!)");
+                        System.out.println("\t" + products[i] + " " + str.append(c) + " шт. за " + (prices[i] * (counts[i] / 3 * 2 + counts[i] % 3)) + " руб. (распродажа!)");
                         amount += prices[i] * (counts[i] / 3 * 2 + counts[i] % 3);
                     } else {
-                        System.out.println("\t" + products[i] + " " + (doBonus ? counts[i] + 1 : counts[i]) + " шт. за " + (prices[i] * counts[i]) + " руб.");
+                        System.out.println("\t" + products[i] + " " + str.append(c) + " шт. за " + (prices[i] * counts[i]) + " руб.");
                         amount += prices[i] * counts[i];
                     }
                 }
             }
-            System.out.println("Итого: " + amount + " руб.");
         }
-
+        System.out.println("Итого: " + amount + " руб.");
     }
 }
