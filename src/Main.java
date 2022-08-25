@@ -34,17 +34,15 @@ public class Main {
                 if (parts.length != 2) {
                     System.out.println("Неверно, вводите номер товара и количество через пробел!");
                     continue;
-                }else {
+                } else {
                     int productNum = Integer.parseInt(parts[0]) - 1;
                     int productCount = Integer.parseInt(parts[1]);
                     counts[productNum] += productCount;
                 }
-            }
-            catch (NumberFormatException exception) {
+            } catch (NumberFormatException exception) {
                 System.out.println("Некорректные данные!");
                 continue;
-            }
-            catch (ArrayIndexOutOfBoundsException exception){
+            } catch (ArrayIndexOutOfBoundsException exception) {
                 System.out.println("Некорректные данные!");
                 continue;
             }
@@ -66,7 +64,6 @@ public class Main {
                     }
                     StringBuilder str = new StringBuilder();
                     int c = (doBonus ? counts[i] + 1 : counts[i]);
-
 
 
                     if (isOnSale && doBonus) {
